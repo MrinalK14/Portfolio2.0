@@ -19,7 +19,8 @@ import {
   Workflow,
   Terminal,
   Check,
-  Lock
+  Lock,
+  ChevronDown
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -36,6 +37,22 @@ const Skills = () => {
   const [activeCategory, setActiveCategory] = useState<string>("web");
   const [isTyping, setIsTyping] = useState(false);
   const [visibleCode, setVisibleCode] = useState<string[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMobileSkills, setShowMobileSkills] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
 
   const skillCategories: SkillCategory[] = [
     {
@@ -175,7 +192,7 @@ const Skills = () => {
   return (
     <div className="w-full h-full flex flex-col bg-[#0A0A0A] text-gray-200 font-mono">
       {/* Code editor header */}
-      <div className="border-b border-gray-800 p-2 flex items-center gap-2">
+      <div className="border-b border-gray-800 p-2 flex items-center gap-2 overflow-x-auto scrollbar-none">
         {skillCategories.map((category) => (
           <button
             key={category.title}
@@ -187,7 +204,8 @@ const Skills = () => {
             }`}
           >
             {category.icon}
-            <span>{category.fileName}</span>
+            <span className={isMobile ? "hidden" : "inline"}>{category.fileName}</span>
+            <span className={isMobile ? "inline" : "hidden"}>{category.title}</span>
             {category.title.toLowerCase().includes(activeCategory.toLowerCase()) && (
               <span className="ml-1.5 bg-gray-800 rounded-full p-0.5 text-xs">
                 <Check className="h-3 w-3" />
@@ -197,9 +215,9 @@ const Skills = () => {
         ))}
       </div>
 
-      <div className="flex flex-1 h-full">
+      <div className="flex flex-1 h-full flex-col md:flex-row">
         {/* Left sidebar - line numbers */}
-        <div className="w-12 bg-[#121212] text-gray-600 p-2 text-right text-sm select-none border-r border-gray-800">
+        <div className={`w-12 bg-[#121212] text-gray-600 p-2 text-right text-sm select-none border-r border-gray-800 ${isMobile ? 'hidden' : 'block'}`}>
           {Array.from({ length: Math.max(20, visibleCode.length) }).map((_, i) => (
             <div key={i} className="leading-6">
               {i + 1}
@@ -230,6 +248,43 @@ const Skills = () => {
             ))}
             {isTyping && <span className="inline-block w-2 h-4 bg-gray-400 animate-pulse">|</span>}
           </div>
+          
+          {/* Mobile skills toggle */}
+          {isMobile && (
+            <div className="mt-6">
+              <button 
+                onClick={() => setShowMobileSkills(!showMobileSkills)}
+                className={`w-full flex items-center justify-between p-3 rounded-md bg-gray-800 ${currentCategory.color}`}
+              >
+                <span>View Skill Levels</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${showMobileSkills ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {showMobileSkills && (
+                <div className="mt-3 space-y-4 p-3 bg-[#121212] rounded-md border border-gray-800">
+                  {currentCategory.skills.map((skill) => (
+                    <div key={skill.name} className="mb-4">
+                      <div className="flex justify-between items-center mb-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className={currentCategory.color}>{skill.icon}</span>
+                          <span className="text-xs">{skill.name}</span>
+                        </div>
+                        <span className="text-xs">{skill.level}%</span>
+                      </div>
+                      <div className="h-1.5 w-full bg-gray-800 rounded-full">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${skill.level}%` }}
+                          transition={{ duration: 0.8, type: "spring" }}
+                          className={`h-full rounded-full ${getColorForCategory(currentCategory.color)}`}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Right sidebar - skill meters */}
@@ -248,40 +303,12 @@ const Skills = () => {
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: `${skill.level}%` }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                  className={`h-full rounded-full`}
-                  style={{ 
-                    backgroundColor: getColorForCategory(currentCategory.color),
-                  }}
+                  transition={{ duration: 0.8, type: "spring" }}
+                  className={`h-full rounded-full ${getColorForCategory(currentCategory.color)}`}
                 />
-              </div>
-              <div className="flex justify-between text-[10px] text-gray-500 mt-1">
-                <div className="flex items-center gap-1">
-                  <Check className="h-2.5 w-2.5" />
-                  <span>{skill.level >= 70 ? 'Advanced' : 'Intermediate'}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  {skill.level < 60 && <Lock className="h-2.5 w-2.5" />}
-                  {skill.level < 60 && <span>Learning</span>}
-                </div>
               </div>
             </div>
           ))}
-        </div>
-      </div>
-      
-      {/* Bottom status bar */}
-      <div className="border-t border-gray-800 p-1.5 flex justify-between text-xs text-gray-500">
-        <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1">
-            <span className="rounded-full h-2 w-2 bg-green-500"></span>
-            Ready
-          </span>
-          <span>Ln {visibleCode.length}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span>{currentCategory.fileName}</span>
-          <span>UTF-8</span>
         </div>
       </div>
     </div>
@@ -290,60 +317,114 @@ const Skills = () => {
 
 // Helper function to colorize code syntax
 function colorizeCodeLine(line: string, categoryColor: string): JSX.Element {
-  if (line.startsWith('import') || line.startsWith('from')) {
-    return <span className="text-blue-400">{line}</span>;
-  }
-  else if (line.startsWith('#') || line.startsWith('//')) {
+  // Simple syntax highlighting
+  const keywords = ["class", "def", "function", "return", "const", "let", "var", "export", "default", "if", "else", "self"];
+  const operators = ["=", "=>", ":", ".", "?", "||"];
+  const specialChars = ["{", "}", "(", ")", "[", "]", ",", ";"];
+  
+  // Check for comments
+  if (line.trim().startsWith("//") || line.trim().startsWith("#")) {
     return <span className="text-gray-500">{line}</span>;
   }
-  else if (line.includes('class ') || line.includes('function ') || line.includes('const ') || line.includes('def ')) {
-    // Colorize class, function, or variable declarations
-    return (
-      <span>
-        {line.split(/\b/).map((part, i) => {
-          if (['class', 'function', 'const', 'def', 'export', 'default', 'return', 'if', 'else', 'declare', 'local'].includes(part)) {
-            return <span key={i} className="text-purple-400">{part}</span>;
-          } else if (['true', 'false'].includes(part)) {
-            return <span key={i} className="text-orange-400">{part}</span>;
-          } else if (!isNaN(Number(part)) || part === 'null' || part === 'undefined') {
-            return <span key={i} className="text-blue-300">{part}</span>;
-          } else if (part.startsWith('"') || part.startsWith("'")) {
-            return <span key={i} className="text-green-400">{part}</span>;
-          } else {
-            return <span key={i}>{part}</span>;
-          }
-        })}
-      </span>
-    );
+  
+  // Split the line into parts that can be individually styled
+  const parts: JSX.Element[] = [];
+  let currentPart = "";
+  let inString = false;
+  let stringChar = "";
+  
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    
+    // Handle strings
+    if ((char === '"' || char === "'") && (i === 0 || line[i-1] !== '\\')) {
+      if (inString && char === stringChar) {
+        // End of string
+        currentPart += char;
+        parts.push(<span key={i} className="text-green-400">{currentPart}</span>);
+        currentPart = "";
+        inString = false;
+      } else if (!inString) {
+        // Start of string
+        if (currentPart) {
+          parts.push(<span key={`p${i}`}>{currentPart}</span>);
+          currentPart = "";
+        }
+        inString = true;
+        stringChar = char;
+        currentPart = char;
+      } else {
+        // Different quote inside a string
+        currentPart += char;
+      }
+      continue;
+    }
+    
+    if (inString) {
+      currentPart += char;
+      continue;
+    }
+    
+    // Check for operators and special characters
+    if (operators.includes(char) || specialChars.includes(char)) {
+      if (currentPart) {
+        parts.push(<span key={`w${i}`}>{currentPart}</span>);
+        currentPart = "";
+      }
+      parts.push(<span key={i} className="text-yellow-300">{char}</span>);
+      continue;
+    }
+    
+    // Check if we're at a word boundary
+    if (char === " " || operators.includes(char) || specialChars.includes(char)) {
+      if (keywords.includes(currentPart)) {
+        parts.push(<span key={`k${i}`} className="text-purple-400">{currentPart}</span>);
+        currentPart = "";
+      }
+      
+      if (currentPart) {
+        // Check if it's a number
+        if (/^\d+$/.test(currentPart)) {
+          parts.push(<span key={`n${i}`} className="text-blue-400">{currentPart}</span>);
+        } else {
+          parts.push(<span key={`w${i}`}>{currentPart}</span>);
+        }
+        currentPart = "";
+      }
+      
+      parts.push(<span key={i}>{char}</span>);
+    } else {
+      currentPart += char;
+    }
   }
-  else if (line.includes(':') && !line.includes('//')) {
-    // Handle Python dictionary keys or similar
-    const [key, value] = line.split(':');
-    return (
-      <span>
-        <span className="text-yellow-300">{key}</span>:
-        {value && <span className={value.includes('Advanced') ? "text-green-400" : ""}>{value}</span>}
-      </span>
-    );
-  } 
-  else if (line.trim().startsWith('{') || line.trim().startsWith('}') || line.trim() === ');' || line.trim() === '};') {
-    return <span className="text-yellow-200">{line}</span>;
+  
+  // Add any remaining part
+  if (currentPart) {
+    if (keywords.includes(currentPart)) {
+      parts.push(<span key="last-k" className="text-purple-400">{currentPart}</span>);
+    } else if (/^\d+$/.test(currentPart)) {
+      parts.push(<span key="last-n" className="text-blue-400">{currentPart}</span>);
+    } else {
+      parts.push(<span key="last">{currentPart}</span>);
+    }
   }
-  else {
-    return <span>{line}</span>;
-  }
+  
+  return <>{parts}</>;
 }
 
-// Get actual color value from Tailwind class
 function getColorForCategory(colorClass: string): string {
-  const colorMap: { [key: string]: string } = {
-    'text-purple-400': '#C084FC',
-    'text-blue-400': '#60A5FA',
-    'text-green-400': '#4ADE80',
-    'text-yellow-400': '#FACC15',
-  };
-  
-  return colorMap[colorClass] || '#60A5FA';
+  switch (colorClass) {
+    case "text-blue-400":
+      return "bg-blue-500";
+    case "text-purple-400":
+      return "bg-purple-500";
+    case "text-yellow-400":
+      return "bg-yellow-500";
+    case "text-green-400":
+      return "bg-green-500";
+    default:
+      return "bg-blue-500";
+  }
 }
 
 export default Skills;

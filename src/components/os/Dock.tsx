@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   User, 
   FolderKanban, 
@@ -17,6 +17,22 @@ interface DockProps {
 }
 
 const Dock = ({ onAppClick, activeApp }: DockProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
+
   const dockItems = [
     { 
       title: "About", 
@@ -136,6 +152,7 @@ const Dock = ({ onAppClick, activeApp }: DockProps) => {
     <FloatingDock 
       items={dockItems}
       className="mb-5" 
+      mobileClassName={isMobile ? "fixed bottom-0 left-0 w-full py-1" : ""}
       onClick={(item) => {
         if (item.onClick) item.onClick();
       }} 

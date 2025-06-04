@@ -19,6 +19,7 @@ import {
   Terminal 
 } from "lucide-react";
 import "./os.css";
+import "./mobile.css";
 
 type WindowData = {
   id: string;
@@ -33,6 +34,31 @@ const Desktop = () => {
   const [activeWindow, setActiveWindow] = useState<string | null>(null);
   const [windowZIndexes, setWindowZIndexes] = useState<Record<string, number>>({});
   const [topZIndex, setTopZIndex] = useState(10);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
+
+  // On mobile, prevent opening multiple windows at once to avoid overwhelming the interface
+  useEffect(() => {
+    if (isMobile && openWindows.length > 1) {
+      // Keep only the active window open
+      if (activeWindow) {
+        setOpenWindows([activeWindow]);
+      }
+    }
+  }, [isMobile, activeWindow]);
 
   const windows: Record<string, WindowData> = {
     about: {
@@ -173,8 +199,13 @@ const Desktop = () => {
     if (openWindows.includes(appId)) {
       bringWindowToFront(appId);
     } else {
-      // Open new window
-      setOpenWindows([...openWindows, appId]);
+      // On mobile, close other windows when opening a new one
+      if (isMobile) {
+        setOpenWindows([appId]);
+      } else {
+        // Desktop behavior - allow multiple windows
+        setOpenWindows([...openWindows, appId]);
+      }
       bringWindowToFront(appId);
     }
   };

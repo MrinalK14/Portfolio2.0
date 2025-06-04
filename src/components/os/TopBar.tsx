@@ -5,6 +5,21 @@ const TopBar = () => {
   const [currentTime, setCurrentTime] = useState<string>("");
   const [currentDate, setCurrentDate] = useState<string>("");
   const [batteryLevel, setBatteryLevel] = useState<number>(85);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
 
   // Update time every second
   useEffect(() => {
@@ -56,21 +71,25 @@ const TopBar = () => {
 
       {/* Center - Date and time */}
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
-        <span className="text-xs font-medium">{currentDate}</span>
+        <span className={`text-xs font-medium ${isMobile ? 'hidden sm:inline' : ''}`}>{currentDate}</span>
         <span className="text-xs font-medium">{currentTime}</span>
       </div>
 
       {/* Right side - System icons */}
       <div className="flex items-center gap-3 text-xs">
-        <div className="flex items-center gap-1.5">
-          <Volume2 className="h-3.5 w-3.5 text-gray-300" />
-        </div>
+        {!isMobile && (
+          <div className="flex items-center gap-1.5">
+            <Volume2 className="h-3.5 w-3.5 text-gray-300" />
+          </div>
+        )}
         <div className="flex items-center gap-1.5">
           <Wifi className="h-3.5 w-3.5 text-gray-300" />
         </div>
-        <div className="flex items-center gap-1.5">
-          <Bluetooth className="h-3.5 w-3.5 text-gray-300" />
-        </div>
+        {!isMobile && (
+          <div className="flex items-center gap-1.5">
+            <Bluetooth className="h-3.5 w-3.5 text-gray-300" />
+          </div>
+        )}
         <div className="flex items-center gap-1.5 mr-1">
           <div className="relative">
             <Battery className="h-3.5 w-3.5 text-gray-300" />
@@ -79,7 +98,7 @@ const TopBar = () => {
               style={{ width: `${(batteryLevel / 100) * 10}px` }}
             />
           </div>
-          <span className="text-xs text-gray-300">{batteryLevel}%</span>
+          <span className={`text-xs text-gray-300 ${isMobile ? 'hidden sm:inline' : ''}`}>{batteryLevel}%</span>
         </div>
       </div>
     </div>

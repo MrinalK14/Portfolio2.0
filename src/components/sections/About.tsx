@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   User, 
   MapPin, 
@@ -6,12 +6,29 @@ import {
   FlaskConical, 
   Camera, 
   TerminalSquare, 
-  ChevronRight
+  ChevronRight,
+  Menu
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const About = () => {
   const [activeTab, setActiveTab] = useState("background");
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMobileNav, setShowMobileNav] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
 
   const aboutData = {
     background: {
@@ -53,34 +70,80 @@ const About = () => {
         <span className="ml-2 text-green-400">v1.0.0</span>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 flex-1">
-        {/* Sidebar navigation */}
-        <div className="w-full md:w-60 shrink-0 bg-[#111111] rounded-md border border-gray-800 overflow-hidden">
-          <div className="px-3 py-2 border-b border-gray-800 font-semibold text-sm text-gray-400">
-            <TerminalSquare className="h-4 w-4 inline-block mr-2" />
-            about-me.sh
-          </div>
-          <div className="p-1">
-            {Object.keys(aboutData).map((key) => {
-              const { title, icon, color } = aboutData[key as AboutKey];
-              return (
-                <button
-                  key={key}
-                  className={`w-full text-left px-3 py-2 rounded-sm flex items-center text-sm transition-colors ${
-                    activeTab === key ? "bg-[#1E1E1E] text-white" : "text-gray-400 hover:bg-[#151515]"
-                  }`}
-                  onClick={() => setActiveTab(key)}
-                >
-                  <span className={`mr-2 ${color}`}>{icon}</span>
-                  <span>{title}</span>
-                  {activeTab === key && (
-                    <ChevronRight className="h-4 w-4 ml-auto" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
+      {/* Mobile navigation toggle */}
+      {isMobile && (
+        <div className="mb-4">
+          <button 
+            onClick={() => setShowMobileNav(!showMobileNav)}
+            className="flex items-center justify-between w-full p-3 bg-[#111111] rounded-md border border-gray-800"
+          >
+            <div className="flex items-center">
+              <span className={`mr-2 ${aboutData[activeTab as AboutKey].color}`}>
+                {aboutData[activeTab as AboutKey].icon}
+              </span>
+              <span>{aboutData[activeTab as AboutKey].title}</span>
+            </div>
+            <Menu className="h-5 w-5 text-gray-400" />
+          </button>
+          
+          {showMobileNav && (
+            <div className="mt-2 bg-[#111111] rounded-md border border-gray-800 p-1">
+              {Object.keys(aboutData).map((key) => {
+                const { title, icon, color } = aboutData[key as AboutKey];
+                return (
+                  <button
+                    key={key}
+                    className={`w-full text-left px-3 py-2 rounded-sm flex items-center text-sm transition-colors ${
+                      activeTab === key ? "bg-[#1E1E1E] text-white" : "text-gray-400 hover:bg-[#151515]"
+                    }`}
+                    onClick={() => {
+                      setActiveTab(key);
+                      setShowMobileNav(false);
+                    }}
+                  >
+                    <span className={`mr-2 ${color}`}>{icon}</span>
+                    <span>{title}</span>
+                    {activeTab === key && (
+                      <ChevronRight className="h-4 w-4 ml-auto" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
+      )}
+
+      <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-6 flex-1`}>
+        {/* Sidebar navigation - hidden on mobile */}
+        {!isMobile && (
+          <div className="w-full md:w-60 shrink-0 bg-[#111111] rounded-md border border-gray-800 overflow-hidden">
+            <div className="px-3 py-2 border-b border-gray-800 font-semibold text-sm text-gray-400">
+              <TerminalSquare className="h-4 w-4 inline-block mr-2" />
+              about-me.sh
+            </div>
+            <div className="p-1">
+              {Object.keys(aboutData).map((key) => {
+                const { title, icon, color } = aboutData[key as AboutKey];
+                return (
+                  <button
+                    key={key}
+                    className={`w-full text-left px-3 py-2 rounded-sm flex items-center text-sm transition-colors ${
+                      activeTab === key ? "bg-[#1E1E1E] text-white" : "text-gray-400 hover:bg-[#151515]"
+                    }`}
+                    onClick={() => setActiveTab(key)}
+                  >
+                    <span className={`mr-2 ${color}`}>{icon}</span>
+                    <span>{title}</span>
+                    {activeTab === key && (
+                      <ChevronRight className="h-4 w-4 ml-auto" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Content panel */}
         <div className="flex-1 bg-[#111111] rounded-md border border-gray-800 overflow-hidden">

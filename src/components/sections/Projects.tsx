@@ -35,11 +35,44 @@ const Projects = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'details'>('grid');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
-
+  
   const projects: Project[] = [
     {
+      id: "auth",
+      title: "Essente",
+      description: "A modern, responsive E-commerce website for perfumes, built with React and Tailwind CSS, featuring a clean design and smooth animations.",
+      techStack: ["React", "Typescript", "Tailwind"],
+      icon: <Lock className="h-5 w-5" />,
+      gradientColor: "bg-purple-500/10",
+      date: "2022-11",
+      type: "Web Application",
+      repoUrl: "https://github.com/MrinalK14/three-step-auth"
+    },
+    {
+      id: "maintenance",
+      title: "Photography Portfolio",
+      description: "A sleek photography portfolio design with fullscreen galleries, image lightbox, and smooth transitions.",
+      techStack: ["React", "Typescript", "Tailwind"],
+      icon: <Cpu className="h-5 w-5" />,
+      gradientColor: "bg-amber-500/10",
+      date: "2022-08",
+      type: "Web Application",
+      repoUrl: "https://github.com/MrinalK14/predictive-maintenance"
+    },
+    {
+      id: "chatbot",
+      title: "Portfolio V1",
+      description: "My first portfolio website built with react, typesript and tailwind css.",
+      techStack: ["React", "Typescript", "Tailwind"],
+      icon: <ShoppingCart className="h-5 w-5" />,
+      gradientColor: "bg-pink-500/10",
+      date: "2023-01",
+      type: "Web Application",
+      repoUrl: "https://github.com/MrinalK14/ecommerce-chatbot"
+    },
+    {
       id: "hrms",
-      title: "HRMS System with ATS",
+      title: "HRMS CRM System",
       description: "Designed and developed an end-to-end HRMS system to streamline recruitment and employee management.",
       techStack: ["React.js", "Node.js", "MongoDB", "ATS"],
       icon: <Users className="h-5 w-5" />,
@@ -50,47 +83,14 @@ const Projects = () => {
     },
     {
       id: "offer",
-      title: "Offer Letter Updation System",
-      description: "Automated offer letter generation for HR teams, reducing manual effort and improving accuracy.",
-      techStack: ["HTML", "CSS", "JavaScript", "React.js", "Node.js"],
+      title: "Converge",
+      description: "All in one platform for creating, managing and tracking events.",
+      techStack: ["Next", "Typescript", "Node.js"],
       icon: <FileText className="h-5 w-5" />,
       gradientColor: "bg-green-500/10",
       date: "2023-03",
       type: "Web Application",
       repoUrl: "https://github.com/MrinalK14/offer-letter-system"
-    },
-    {
-      id: "auth",
-      title: "Three-Step Authentication System",
-      description: "Integrated biometric security with fingerprint, facial recognition, and password/PIN for advanced authentication.",
-      techStack: ["Python", "OpenCV", "Machine Learning", "Flask"],
-      icon: <Lock className="h-5 w-5" />,
-      gradientColor: "bg-purple-500/10",
-      date: "2022-11",
-      type: "ML Application",
-      repoUrl: "https://github.com/MrinalK14/three-step-auth"
-    },
-    {
-      id: "maintenance",
-      title: "Predictive Maintenance System",
-      description: "Developed a system to forecast equipment failures, improving operational efficiency for manufacturing clients.",
-      techStack: ["Python", "Machine Learning", "IoT", "Data Analytics"],
-      icon: <Cpu className="h-5 w-5" />,
-      gradientColor: "bg-amber-500/10",
-      date: "2022-08",
-      type: "ML Application",
-      repoUrl: "https://github.com/MrinalK14/predictive-maintenance"
-    },
-    {
-      id: "chatbot",
-      title: "AI-Powered E-Commerce Chatbot",
-      description: "Created an AI chatbot to enhance customer experience and automate support for online retail platforms.",
-      techStack: ["React.js", "Node.js", "MongoDB", "NLP"],
-      icon: <ShoppingCart className="h-5 w-5" />,
-      gradientColor: "bg-pink-500/10",
-      date: "2023-01",
-      type: "Web Application",
-      repoUrl: "https://github.com/MrinalK14/ecommerce-chatbot"
     },
   ];
 

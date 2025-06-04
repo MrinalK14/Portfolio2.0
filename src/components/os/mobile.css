@@ -1,0 +1,208 @@
+/* Mobile-specific styles for the macOS-inspired portfolio */
+
+/* Mobile media queries */
+@media (max-width: 767px) {
+  /* Make windows more mobile-friendly */
+  .window-shadow {
+    max-width: 95vw !important;
+    max-height: 80vh !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    overflow: hidden;
+  }
+
+  /* Prevent horizontal scrolling on mobile */
+  body {
+    overflow-x: hidden;
+    touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Improve scrolling within windows on mobile */
+  .custom-scrollbar {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  /* Increase size of touch targets for mobile */
+  button:not(.window-control), a {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Window control buttons - make them normal size and visible */
+  .window-control {
+    width: 12px !important;
+    height: 12px !important;
+    min-height: 12px !important;
+    min-width: 12px !important;
+    padding: 0 !important;
+    margin: 0 3px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  /* Make window control buttons more visible */
+  .window-control:first-child {
+    background-color: #ff5f57 !important;
+  }
+  
+  .window-control:nth-child(2) {
+    background-color: #febc2e !important;
+  }
+  
+  .window-control:nth-child(3) {
+    background-color: #28c840 !important;
+  }
+
+  /* Dock optimizations for mobile */
+  .dock-icon {
+    transform-origin: center;
+  }
+
+  /* Fix window resizing/dragging for touch devices */
+  .resize-handle {
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+  }
+
+  /* Make window headers more touch-friendly */
+  .window-header {
+    padding: 10px;
+  }
+  
+  /* Keep window control buttons normal size */
+  .window-header button {
+    min-height: initial;
+    min-width: initial;
+    transform: none !important;
+  }
+  
+  /* Improve dock appearance on smaller screens */
+  .dock-container {
+    padding: 8px;
+  }
+  
+  /* Fix mobile scrolling and zooming issues */
+  * {
+    touch-action: manipulation;
+  }
+  
+  /* Mobile content adjustments */
+  .mobile-content {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  /* Adjust tables for mobile */
+  .mobile-content table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  /* Make form inputs more touch-friendly */
+  .mobile-content input,
+  .mobile-content textarea,
+  .mobile-content select {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    padding: 10px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  /* Adjust headings for mobile */
+  .mobile-content h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  .mobile-content h2 {
+    font-size: 1.3rem !important;
+  }
+  
+  .mobile-content h3 {
+    font-size: 1.1rem !important;
+  }
+  
+  /* Improve spacing for mobile */
+  .mobile-content > * + * {
+    margin-top: 1rem;
+  }
+  
+  /* Make images responsive */
+  .mobile-content img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Improve code blocks on mobile */
+  .mobile-content pre {
+    overflow-x: auto;
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+  
+  /* Better spacing for mobile content */
+  .p-4 {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Improved tap target for mobile */
+@media (max-width: 767px) {
+  /* Exclude window control buttons from mobile tap target styles */
+  .mobile-tap-target:not(.window-control) {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px;
+  }
+  
+  /* Special handling for window control buttons */
+  .window-control {
+    min-height: 12px !important;
+    min-width: 12px !important;
+    padding: 0 !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
+  
+  /* Fix for mobile viewport height issues */
+  .h-screen {
+    height: 100vh; /* fallback */
+    height: -webkit-fill-available;
+  }
+  
+  /* Prevent text selection on mobile when interacting with UI */
+  .prevent-select {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Fix iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  .h-screen {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Enhance scrolling performance on mobile */
+.scroll-momentum {
+  -webkit-overflow-scrolling: touch;
+} 
+
+/* Terminal adjustments for mobile */
+@media (max-width: 767px) {
+  .font-mono {
+    font-size: 12px;
+  }
+  
+  /* Wrap long terminal lines */
+  .font-mono div {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+} 

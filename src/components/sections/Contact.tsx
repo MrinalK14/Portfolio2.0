@@ -63,9 +63,9 @@ const Contact = () => {
                       </div>
                       
                       {/* App Content */}
-                      <div className="flex-1 overflow-auto scrollbar-hide px-5 py-6 flex flex-col">
-                        <div className="mb-6 px-5 py-4 bg-zinc-800/30 rounded-xl border border-zinc-700/20 text-center">
-                          <p className="text-sm text-zinc-300 leading-relaxed">
+                      <div className="flex-1 overflow-auto scrollbar-hide px-5 py-4 flex flex-col space-y-5">
+                        <div className="px-4 py-3 bg-zinc-800/30 rounded-xl border border-zinc-700/20 text-center">
+                          <p className="text-xs text-zinc-300 leading-relaxed">
                             Connect with me through any of these channels
                           </p>
                         </div>
@@ -73,21 +73,21 @@ const Contact = () => {
                         {/* Email Option */}
                         <a
                           href="mailto:mrinalkapoor24@gmail.com"
-                          className="mb-5 block"
+                          className="block"
                         >
-                          <div className="bg-gradient-to-br from-[#83C9F4]/20 to-[#83C9F4]/5 p-6 rounded-2xl border border-[#83C9F4]/20 shadow-lg flex flex-col items-center gap-4 active:scale-[0.98] transition-all">
-                            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-3 rounded-full">
-                              <Mail className="h-8 w-8 text-white" />
+                          <div className="bg-gradient-to-br from-[#83C9F4]/20 to-[#83C9F4]/5 p-4 rounded-2xl border border-[#83C9F4]/20 shadow-lg flex flex-col items-center gap-2 active:scale-[0.98] transition-all">
+                            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-2 rounded-full">
+                              <Mail className="h-6 w-6 text-white" />
                             </div>
                             <div className="text-center">
-                              <p className="text-lg font-semibold text-white mb-1.5">Email Me</p>
+                              <p className="text-sm font-semibold text-white mb-1">Email Me</p>
                               <p className="text-xs text-zinc-400">mrinalkapoor24@gmail.com</p>
                               <button 
                                 onClick={(e) => {
                                   e.preventDefault();
                                   copyToClipboard("mrinalkapoor24@gmail.com", "Email");
                                 }}
-                                className="mt-2 px-3 py-1 bg-zinc-800/80 rounded-full text-xs text-zinc-300 flex items-center mx-auto gap-1.5"
+                                className="mt-1 px-2 py-0.5 bg-zinc-800/80 rounded-full text-xs text-zinc-300 flex items-center mx-auto gap-1"
                               >
                                 <Copy className="h-3 w-3" />
                                 <span>Copy</span>
@@ -97,20 +97,19 @@ const Contact = () => {
                         </a>
                         
                         {/* Social Options */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-4 mt-2">
                           <a
                             href="https://linkedin.com/in/mrinal-kapoor-462794230"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="block"
                           >
-                            <div className="bg-gradient-to-br from-[#0A66C2]/20 to-[#0A66C2]/5 p-5 rounded-2xl border border-[#0A66C2]/20 shadow-lg flex flex-col items-center gap-3 h-full active:scale-[0.98] transition-all">
-                              <div className="bg-[#0A66C2] p-2.5 rounded-full">
-                                <Linkedin className="h-6 w-6 text-white" />
+                            <div className="bg-gradient-to-br from-[#0A66C2]/20 to-[#0A66C2]/5 p-3 rounded-2xl border border-[#0A66C2]/20 shadow-lg flex flex-col items-center gap-2 h-full active:scale-[0.98] transition-all">
+                              <div className="bg-[#0A66C2] p-2 rounded-full">
+                                <Linkedin className="h-5 w-5 text-white" />
                               </div>
                               <div className="text-center">
-                                <p className="text-sm font-medium text-white">LinkedIn</p>
-                                <p className="text-[10px] text-zinc-400 mt-1">Professional Profile</p>
+                                <p className="text-xs font-medium text-white">LinkedIn</p>
                               </div>
                             </div>
                           </a>
@@ -121,32 +120,22 @@ const Contact = () => {
                             rel="noopener noreferrer"
                             className="block"
                           >
-                            <div className="bg-gradient-to-br from-zinc-700/20 to-zinc-700/5 p-5 rounded-2xl border border-zinc-700/20 shadow-lg flex flex-col items-center gap-3 h-full active:scale-[0.98] transition-all">
-                              <div className="bg-zinc-800 p-2.5 rounded-full">
-                                <Github className="h-6 w-6 text-white" />
+                            <div className="bg-gradient-to-br from-zinc-700/20 to-zinc-700/5 p-3 rounded-2xl border border-zinc-700/20 shadow-lg flex flex-col items-center gap-2 h-full active:scale-[0.98] transition-all">
+                              <div className="bg-zinc-800 p-2 rounded-full">
+                                <Github className="h-5 w-5 text-white" />
                               </div>
                               <div className="text-center">
-                                <p className="text-sm font-medium text-white">GitHub</p>
-                                <p className="text-[10px] text-zinc-400 mt-1">Code Repositories</p>
+                                <p className="text-xs font-medium text-white">GitHub</p>
                               </div>
                             </div>
                           </a>
                         </div>
 
-                        {/* Contact Card */}
-                        <div className="mt-6 p-5 bg-zinc-800/20 border border-zinc-700/20 rounded-2xl">
-                          <div className="flex flex-col gap-3">
-                            <h4 className="text-xs uppercase text-zinc-500 font-medium">Location</h4>
-                            <p className="text-sm text-zinc-300">India</p>
-                            
-                            <h4 className="text-xs uppercase text-zinc-500 font-medium mt-2">Response Time</h4>
-                            <p className="text-sm text-zinc-300">Usually within 24-48 hours</p>
-
-                            <h4 className="text-xs uppercase text-zinc-500 font-medium mt-2">Status</h4>
-                            <div className="flex items-center gap-2">
-                              <span className="h-2 w-2 rounded-full bg-green-500"></span>
-                              <p className="text-sm text-zinc-300">Open to opportunities</p>
-                            </div>
+                        {/* Status Indicator */}
+                        <div className="p-3 bg-zinc-800/20 border border-zinc-700/20 rounded-2xl">
+                          <div className="flex items-center gap-2 justify-center">
+                            <span className="h-2 w-2 rounded-full bg-green-500"></span>
+                            <p className="text-xs text-zinc-300">Open to opportunities</p>
                           </div>
                         </div>
                       </div>
